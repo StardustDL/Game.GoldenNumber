@@ -34,24 +34,43 @@ class Game:
             if len(acts) == self.round:
                 sm += acts[-1].num1 + acts[-1].num2
                 cnt += 2
-        avg = sm / cnt
+        avg = 0.618 * (sm / cnt)
         self.goldenNums.append(avg)
         if self.userNum >= 2:
-            mn, mnName = 200, None
-            mx, mxName = -200, None
+            mn, mnName = 200, set()
+            mx, mxName = -200, set()
             for name, acts in self.userActs.items():
                 if len(acts) == self.round:
                     x, y = abs(acts[-1].num1-avg), abs(acts[-1].num2-avg)
                     if x < mn:
-                        mn, mnName = x, name
+                        mn = x
+                        mnName.clear()
+                        mnName.add(name)
+                    elif x == mn:
+                        mnName.add(name)
                     if x > mx:
-                        mx, mxName = x, name
+                        mx = x
+                        mxName.clear()
+                        mxName.add(name)
+                    elif x == mx:
+                        mxName.add(name)
+
                     if y < mn:
-                        mn, mnName = y, name
+                        mn = y
+                        mnName.clear()
+                        mnName.add(name)
+                    elif y == mn:
+                        mnName.add(name)
                     if y > mx:
-                        mx, mxName = y, name
-            self.scores[mnName] += self.userNum - 2
-            self.scores[mxName] += -2
+                        mx = y
+                        mxName.clear()
+                        mxName.add(name)
+                    elif y == mx:
+                        mxName.add(name)
+            for name in mnName:
+                self.scores[name] += self.userNum - 2
+            for name in mxName:
+                self.scores[name] += -2
 
         for acts in self.userActs.values():
             if len(acts) != self.round:

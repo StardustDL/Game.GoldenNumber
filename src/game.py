@@ -19,15 +19,18 @@ class Game:
         self.userNum = 0
 
     def initUsers(self, users: list):
+        """Initialize players"""
         self.userNum = len(users)
         for name in users:
             self.userActs[name] = []
             self.scores[name] = 0
 
     def beginRound(self):
+        """Start a new round"""
         self.round += 1
 
     def endRound(self):
+        """End current round and judge for scores"""
         sm = 0
         cnt = 0
         for acts in self.userActs.values():
@@ -77,9 +80,11 @@ class Game:
                 acts.append(Action(0, 0))
 
     def getHistory(self) -> History:
+        """Gets history"""
         return History(self.goldenNums, self.userActs)
 
-    def userAct(self, name: str, action: Action)->bool:
+    def userAct(self, name: str, action: Action) -> bool:
+        """Do a user action"""
         if (not (0 < action.num1 < 100)) or (not (0 < action.num2 < 100)):
             return False
         if name not in self.userActs:

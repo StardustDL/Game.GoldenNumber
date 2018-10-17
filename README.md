@@ -44,5 +44,5 @@ python ./main.py
 python ./main.py 1000
 
 # 测试 100 回合并将回合历史信息记录到 log.json 文件中
-python ./python 100 -l
+python ./main.py 100 -l
 ```

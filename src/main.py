@@ -1,5 +1,5 @@
 import players
-from game import Game
+from goldenNumber.game import Game
 import sys
 import os
 import json
@@ -36,6 +36,9 @@ def main():
         g.endRound()
 
     print("Finished", maxRound, "rounds")
+    if g.userNum > 0:
+        print("Winner:", sorted(g.scores.items(),
+                                key=lambda x: x[1], reverse=True)[0])
     print(g.scores)
 
     if showGoldenNum or showPlayerScore:

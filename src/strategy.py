@@ -1,5 +1,7 @@
-from game import Action, History
 import random
+
+from goldenNumber.game import Action, History
+import goldenNumber.helper as helper
 
 
 def randomReal() -> float:
@@ -8,34 +10,49 @@ def randomReal() -> float:
     return random.randint(0, MAX) / MAX
 
 
-def getRandomNum(history: History) -> Action:
+def historyAvg(history: History) -> float:
+    gl = history.goldenNums
+    if len(gl) == 0:
+        return None
+    return sum(gl)/len(gl)
+
+
+def getRandom(history: History) -> Action:
     """Random number in [0,61.8]"""
     x = 0 + 100 * 0.618 * randomReal()
     y = 0 + 100 * 0.618 * randomReal()
     return Action(x, y)
 
 
-def getHistoryTrendNum(history: History) -> Action:
-    """Follow the last two golden number's trend"""
+def getHistoryTrend(history: History) -> Action:
+    """Follow the last two golden Number's trend"""
     gl = history.goldenNums
     if len(gl) == 0:
-        return getRandomNum(history)
+        return getRandom(history)
     elif len(gl) == 1:
         return Action(gl[0], gl[0])
     else:
         y = gl[-1] + gl[-1] - gl[-2]
-        if y <= 0:
-            y = 0.1
-        if y >= 100*0.618:
-            y = 100 * 0.618 - 0.1
-        return Action(gl[-1], y)
+        return Action(gl[-1], helper.adjustNumberInRange(y))
 
 
-def getAvgHistoryNum(history: History) -> Action:
+def getHistoryAvg(history: History) -> Action:
     """Average of history golden numbers"""
     gl = history.goldenNums
     if len(gl) == 0:
-        return getRandomNum(history)
+        return getRandom(history)
     else:
-        x = sum(gl) / len(gl)
+        x = historyAvg(history)
         return Action(x, x)
+
+
+def getHistoryTrendAndAvg(history: History) -> Action:
+    """Follow the last two golden number's trend"""
+    gl = history.goldenNums
+    if len(gl) == 0:
+        return getRandom(history)
+    elif len(gl) == 1:
+        return Action(gl[0], gl[0])
+    else:
+        y = gl[-1] + gl[-1] - gl[-2]
+        return Action(historyAvg(history), helper.adjustNumberInRange(y))

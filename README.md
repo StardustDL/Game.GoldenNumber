@@ -17,6 +17,19 @@ N 个玩家，每回合每个玩家给出两个区间 (0,100) 中的有理数（
 - `players.py` 记录所有注册的玩家及其策略
 - `strategy.py` 定义用到的策略，实现解耦
 - `game.py` 游戏相关类型
+- `viewer.py` 可视化显示相关方法
+
+## 安装
+
+依赖于以下模块，请使用 pip 安装：
+
+- `numpy`
+- `matplotlib`
+
+```sh
+pip install numpy
+pip install matplotlib
+```
 
 ## 使用
 
@@ -35,7 +48,14 @@ def getRandomNum(history: History) -> Action:
 "random1": strategy.getRandomNum,
 ```
 
-3. 命令行调用，执行完成后，程序显示每个玩家的得分
+3. 命令行调用，执行完成后，程序输出并显示每个玩家的得分，黄金点变化趋势图
+
+|命令行选项|描述|
+|-|-|
+|数字|指定总回合数，默认为 8|
+|`-l`|写入日志文件 `log.json`|
+|`-ng`|不显示黄金点趋势图|
+|`-ns`|不显示玩家得分图|
 
 ```sh
 python ./main.py
@@ -45,4 +65,9 @@ python ./main.py 1000
 
 # 测试 100 回合并将回合历史信息记录到 log.json 文件中
 python ./main.py 100 -l
+
+python ./main.py 100 -ns
+
+python ./main.py 100 -ns -ng
 ```
+

@@ -7,16 +7,21 @@ import json
 
 def main():
 
-    maxRound = 5
+    maxRound = 8
     saveLog = False
+    showGoldenNum, showPlayerScore = True, True
 
     if len(sys.argv) <= 1:
         pass
-    elif len(sys.argv) == 2:
-        maxRound = int(sys.argv[1])
-    elif len(sys.argv) == 3:
-        maxRound = int(sys.argv[1])
-        saveLog = sys.argv[2] == "-l"
+    elif len(sys.argv) >= 2:
+        other = list(filter(lambda x: not x.startswith('-'), sys.argv[1:]))
+        if len(other) > 0:
+            maxRound = int(other[0])
+
+        switches = list(map(lambda x: x.lstrip('-'),
+                            filter(lambda x: x.startswith('-'), sys.argv[1:])))
+        saveLog = "l" in switches
+        showGoldenNum, showPlayerScore = "ng" not in switches, "ns" not in switches
 
     g = Game()
 
@@ -32,6 +37,16 @@ def main():
 
     print("Finished", maxRound, "rounds")
     print(g.scores)
+
+    if showGoldenNum or showPlayerScore:
+        import viewer
+        if viewer.importedSuccess:
+            if showGoldenNum:
+                viewer.drawGoldenNumber(g)
+            if showPlayerScore:
+                viewer.drawScore(g)
+            viewer.plt.show()
+
     if saveLog:
         with open("./log.json", 'w', encoding='utf-8') as json_file:
             json.dump(g.getHistory(), json_file,

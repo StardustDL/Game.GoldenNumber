@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 from goldenNumber.game import Action, History
 import goldenNumber.helper as helper
@@ -16,11 +17,17 @@ def historyAvg(history: History) -> float:
         return None
     return sum(gl)/len(gl)
 
+def getRandom1(history: History) -> Action:
+    """Random number in (0,100)"""
+    x = helper.adjustNumberInRange(0 + 100 * randomReal())
+    y = helper.adjustNumberInRange(0 + 100 * randomReal())
+    return Action(x, y)
 
-def getRandom(history: History) -> Action:
-    """Random number in [0,61.8]"""
-    x = 0 + 100 * 0.618 * randomReal()
-    y = 0 + 100 * 0.618 * randomReal()
+
+def getRandom2(history: History) -> Action:
+    """Random number in (0,61.8]"""
+    x = helper.adjustNumberInRange(0 + 100 * 0.618 * randomReal())
+    y = helper.adjustNumberInRange(0 + 100 * 0.618 * randomReal())
     return Action(x, y)
 
 
@@ -28,7 +35,7 @@ def getHistoryTrend(history: History) -> Action:
     """Follow the last two golden Number's trend"""
     gl = history.goldenNums
     if len(gl) == 0:
-        return getRandom(history)
+        return getRandom2(history)
     elif len(gl) == 1:
         return Action(gl[0], gl[0])
     else:
@@ -40,17 +47,17 @@ def getHistoryAvg(history: History) -> Action:
     """Average of history golden numbers"""
     gl = history.goldenNums
     if len(gl) == 0:
-        return getRandom(history)
+        return getRandom2(history)
     else:
         x = historyAvg(history)
         return Action(x, x)
 
 
 def getHistoryTrendAndAvg(history: History) -> Action:
-    """Follow the last two golden number's trend"""
+    """Use trend and average"""
     gl = history.goldenNums
     if len(gl) == 0:
-        return getRandom(history)
+        return getRandom2(history)
     elif len(gl) == 1:
         return Action(gl[0], gl[0])
     else:

@@ -9,7 +9,7 @@ def main():
 
     maxRound = 8
     saveLog = False
-    showGoldenNum, showPlayerScore = True, True
+    showGoldenNum, showPlayerScore = False, False
 
     if len(sys.argv) <= 1:
         pass
@@ -21,7 +21,7 @@ def main():
         switches = list(map(lambda x: x.lstrip('-'),
                             filter(lambda x: x.startswith('-'), sys.argv[1:])))
         saveLog = "l" in switches
-        showGoldenNum, showPlayerScore = "ng" not in switches, "ns" not in switches
+        showGoldenNum, showPlayerScore = "g" in switches, "s" in switches
 
     g = Game()
 

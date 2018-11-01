@@ -17,6 +17,7 @@ def historyAvg(history: History) -> float:
         return None
     return sum(gl)/len(gl)
 
+
 def getRandom1(history: History) -> Action:
     """Random number in (0,100)"""
     x = helper.adjustNumberInRange(0 + 100 * randomReal())
@@ -63,3 +64,44 @@ def getHistoryTrendAndAvg(history: History) -> Action:
     else:
         y = gl[-1] + gl[-1] - gl[-2]
         return Action(historyAvg(history), helper.adjustNumberInRange(y))
+
+
+def getHistoryLastAndAvg(history: History) -> Action:
+    """Use last and average"""
+    gl = history.goldenNums
+    if len(gl) == 0:
+        return getRandom2(history)
+    elif len(gl) == 1:
+        return Action(gl[0], gl[0])
+    else:
+        return Action(historyAvg(history), gl[-1])
+
+
+def getRepeat(history: History) -> Action:
+    """Use last two golden number"""
+    gl = history.goldenNums
+    if len(gl) == 0:
+        return getRandom2(history)
+    elif len(gl) == 1:
+        return Action(gl[-1], gl[-1])
+    else:
+        return Action(gl[-1], gl[-2])
+
+
+def getSpecialTrend(history: History) -> Action:
+    """Special trend with history"""
+    gl = history.goldenNums
+    if len(gl) == 0:
+        return getRandom2(history)
+    x, y = gl[-1], gl[-1]
+    if len(gl) >= 2:
+        t = gl[-1] - gl[-2]
+        if abs(t) > 2:
+            t = 0
+        x += t
+    if len(gl) >= 3:
+        t = gl[-2]-gl[-3]
+        if abs(t) > 2:
+            t = 0
+        y += t
+    return Action(x,y)

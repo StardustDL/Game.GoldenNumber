@@ -12,8 +12,11 @@ players = {
     "trend1": strategy.getHistoryTrend,
     "trend2": strategy.getHistoryTrend,
     "trend3": strategy.getHistoryTrend,
+    "Trend1": strategy.getSpecialTrend,
+    "repeater1": strategy.getRepeat,
     "avg1": strategy.getHistoryAvg,
     "avg2": strategy.getHistoryAvg,
     "avg3": strategy.getHistoryAvg,
     "avg&trend": strategy.getHistoryTrendAndAvg,
+    "avg&last": strategy.getHistoryLastAndAvg,
 }
